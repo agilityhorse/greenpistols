@@ -51,7 +51,7 @@
             We’re not ready yet, but leave your email and we’ll notify you when
             we start accepting orders.
           </p>
-          <form id="emailForm" method="POST" action="save_email.php">
+          <form id="emailForm">
             <input
               type="email"
               name="email"
@@ -60,6 +60,7 @@
             />
             <button type="submit" class="cta">Submit</button>
           </form>
+          <p id="responseMsg" style="font-size: 12px; margin-top: 10px"></p>
         </div>
       </div>
 
@@ -84,20 +85,38 @@
       const modal = document.getElementById("emailModal");
       const btn = document.getElementById("joinBtn");
       const span = document.querySelector(".close");
+      const form = document.getElementById("emailForm");
+      const responseMsg = document.getElementById("responseMsg");
 
-      btn.onclick = function () {
-        modal.style.display = "block";
+      // Otwieranie modala
+      btn.onclick = () => (modal.style.display = "block");
+      span.onclick = () => (modal.style.display = "none");
+      window.onclick = (e) => {
+        if (e.target === modal) modal.style.display = "none";
       };
 
-      span.onclick = function () {
-        modal.style.display = "none";
-      };
+      // Obsługa formularza
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const email = form.email.value;
 
-      window.onclick = function (event) {
-        if (event.target === modal) {
-          modal.style.display = "none";
-        }
-      };
+        fetch(
+          "https://script.google.com/macros/s/AKfycbzY_lItc3E1WiQk75Yk5Vm7QnXHVUCpT4cUk3GvSh9lX6Of8L9WrWlp3nUfL9Uenc0/exec",
+          {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: "email=" + encodeURIComponent(email),
+          }
+        )
+          .then(() => {
+            responseMsg.textContent = "✅ Thanks! Your email has been saved.";
+            form.reset();
+          })
+          .catch(() => {
+            responseMsg.textContent = "❌ Error saving email. Try again.";
+          });
+      });
     </script>
   </body>
 </html>
