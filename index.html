@@ -73,10 +73,10 @@
 
       <footer>
         <p>
-          <a href="https://www.instagram.com/agilityhorse">About Me</a>
-          | <a href="www.instagram.com/agilityhorse">Instagram</a> |
+          <a href="aboutme.html">About Me</a> |
+          <a href="www.instagram.com/greenpistolscom">Instagram</a> |
           <a href="https://x.com/greenpistolscom">X Profile</a> |
-          <a href="www.instagram.com/agilityhorse">Tik Tok</a>
+          <a href="https://agilityhorse.github.io/greenpistols/">Tik Tok</a>
         </p>
       </footer>
     </div>
@@ -88,20 +88,18 @@
       const form = document.getElementById("emailForm");
       const responseMsg = document.getElementById("responseMsg");
 
-      // 🔹 Obsługa przycisku otwierającego modal
+      // Otwieranie modala
       btn.onclick = () => (modal.style.display = "block");
 
-      // 🔹 Zamknięcie po kliknięciu w X
+      // Zamknięcie po kliknięciu w X
       span.onclick = () => (modal.style.display = "none");
 
-      // 🔹 Zamknięcie po kliknięciu poza okienko
+      // Zamknięcie po kliknięciu poza okienko
       window.onclick = (event) => {
-        if (event.target === modal) {
-          modal.style.display = "none";
-        }
+        if (event.target === modal) modal.style.display = "none";
       };
 
-      // 🔹 Obsługa formularza (wysyłka do Google Sheets)
+      // Formularz wysyłający email do Google Sheets
       form.addEventListener("submit", function (e) {
         e.preventDefault();
         const email = form.email.value;
@@ -114,14 +112,9 @@
             body: "email=" + encodeURIComponent(email),
           }
         )
-          .then((res) => res.text())
-          .then((text) => {
-            if (text.includes("SUCCESS")) {
-              responseMsg.textContent = "✅ Thanks! Your email has been saved.";
-              form.reset();
-            } else {
-              responseMsg.textContent = "⚠️ Something went wrong: " + text;
-            }
+          .then(() => {
+            responseMsg.textContent = "✅ Thanks! Your email has been saved.";
+            form.reset();
           })
           .catch((err) => {
             responseMsg.textContent = "❌ Error: " + err;
