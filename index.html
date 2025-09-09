@@ -82,9 +82,26 @@
     </div>
 
     <script>
+      const modal = document.getElementById("emailModal");
+      const btn = document.getElementById("joinBtn");
+      const span = document.querySelector(".close");
       const form = document.getElementById("emailForm");
       const responseMsg = document.getElementById("responseMsg");
 
+      // 🔹 Obsługa przycisku otwierającego modal
+      btn.onclick = () => (modal.style.display = "block");
+
+      // 🔹 Zamknięcie po kliknięciu w X
+      span.onclick = () => (modal.style.display = "none");
+
+      // 🔹 Zamknięcie po kliknięciu poza okienko
+      window.onclick = (event) => {
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      };
+
+      // 🔹 Obsługa formularza (wysyłka do Google Sheets)
       form.addEventListener("submit", function (e) {
         e.preventDefault();
         const email = form.email.value;
