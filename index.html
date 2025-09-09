@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Green Pistols</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>GREEN PISTOLS</h1>
+        <p class="tagline">One pair. One protest. Every month.</p>
+      </header>
+
+      <section class="product-image">
+        <img src="images/socks.png" alt="Green Revenge Socks" />
+      </section>
+
+      <section class="price-breakdown">
+        <pre>
+€9.00 → whole price included:
+
+€2.88 → donation to foundation
+€2.88 → production
+€3.24 → worldwide shipping
+      </pre
+        >
+      </section>
+
+      <section class="foundation">
+        <p>
+          I want start support
+          <a href="https://snowleopard.org/"
+            ><strong>Snow Leopard Trust</strong></a
+          >
+          to fight for white big cat in November.
+        </p>
+      </section>
+
+      <section class="subscription">
+        <p class="price">€9 / month subscription</p>
+        <button class="cta" id="joinBtn">JOIN THE REBELLION</button>
+      </section>
+
+      <div id="emailModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>We’re not ready yet</h2>
+          <p>
+            We’re not ready yet, but leave your email and we’ll notify you when
+            we start accepting orders.
+          </p>
+          <form id="emailForm" method="POST" action="save_email.php">
+            <input
+              type="email"
+              name="email"
+              placeholder="Your email"
+              required
+            />
+            <button type="submit" class="cta">Submit</button>
+          </form>
+        </div>
+      </div>
+
+      <section class="how-it-works">
+        <p>
+          1 pair of socks every month.<br />
+          Worldwide delivery. Transparent donations.
+        </p>
+      </section>
+
+      <footer>
+        <p>
+          <a href="https://www.instagram.com/agilityhorse">About Me</a>
+          | <a href="www.instagram.com/agilityhorse">Instagram</a> |
+          <a href="https://x.com/greenpistolscom">X Profile</a> |
+          <a href="www.instagram.com/agilityhorse">Tik Tok</a>
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      const modal = document.getElementById("emailModal");
+      const btn = document.getElementById("joinBtn");
+      const span = document.querySelector(".close");
+
+      btn.onclick = function () {
+        modal.style.display = "block";
+      };
+
+      span.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      window.onclick = function (event) {
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      };
+    </script>
+  </body>
+</html>
