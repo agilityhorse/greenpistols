@@ -82,39 +82,32 @@
     </div>
 
     <script>
-      const modal = document.getElementById("emailModal");
-      const btn = document.getElementById("joinBtn");
-      const span = document.querySelector(".close");
       const form = document.getElementById("emailForm");
       const responseMsg = document.getElementById("responseMsg");
 
-      // Otwieranie modala
-      btn.onclick = () => (modal.style.display = "block");
-      span.onclick = () => (modal.style.display = "none");
-      window.onclick = (e) => {
-        if (e.target === modal) modal.style.display = "none";
-      };
-
-      // Obsługa formularza
       form.addEventListener("submit", function (e) {
         e.preventDefault();
         const email = form.email.value;
 
         fetch(
-          "https://script.google.com/macros/s/AKfycbzY_lItc3E1WiQk75Yk5Vm7QnXHVUCpT4cUk3GvSh9lX6Of8L9WrWlp3nUfL9Uenc0/exec",
+          "https://script.google.com/macros/s/AKfycbz8PEjFIdkOtNoYqGQ3REZhCCfovIYqvaf5-sLozcIRLLm5KrjzCOmP_rZRU_ZZcE81/exec",
           {
             method: "POST",
-            mode: "no-cors",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: "email=" + encodeURIComponent(email),
           }
         )
-          .then(() => {
-            responseMsg.textContent = "✅ Thanks! Your email has been saved.";
-            form.reset();
+          .then((res) => res.text())
+          .then((text) => {
+            if (text.includes("SUCCESS")) {
+              responseMsg.textContent = "✅ Thanks! Your email has been saved.";
+              form.reset();
+            } else {
+              responseMsg.textContent = "⚠️ Something went wrong: " + text;
+            }
           })
-          .catch(() => {
-            responseMsg.textContent = "❌ Error saving email. Try again.";
+          .catch((err) => {
+            responseMsg.textContent = "❌ Error: " + err;
           });
       });
     </script>
