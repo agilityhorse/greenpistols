@@ -82,46 +82,87 @@
     </div>
 
     <script>
-      const modal = document.getElementById("emailModal");
-      const btn = document.getElementById("joinBtn");
-      const span = document.querySelector(".close");
-      const form = document.getElementById("emailForm");
-      const responseMsg = document.getElementById("responseMsg");
+document.addEventListener("DOMContentLoaded", function () {
+  const modal = document.getElementById("emailModal");
+  const btn = document.getElementById("joinBtn");
+  const span = document.querySelector(".close");
+  const form = document.getElementById("emailForm");
+  const responseMsg = document.getElementById("responseMsg");
 
-      // Otwieranie modala
-      btn.onclick = () => (modal.style.display = "block");
+  // Twój URL do Apps Script (wklej tu dokładny /exec URL)
+  const APPS_SCRIPT_URL = "Wklej_tutaj_swoj_URL_z_apps_script_exec";
 
-      // Zamknięcie po kliknięciu w X
-      span.onclick = () => (modal.style.display = "none");
+  // Funkcja do wysyłania danych do Apps Script (POST x-www-form-urlencoded)
+  function postToSheets(params) {
+    // params powinien być stringiem "a=1&b=2" lub URLSearchParams
+    fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params
+    })
+    .then(res => res.text())
+    .then(text => {
+      // opcjonalnie: debug w konsoli
+      // console.log('AppsScript response:', text);
+    })
+    .catch(err => {
+      console.warn("Logging to Sheets failed:", err);
+    });
+  }
 
-      // Zamknięcie po kliknięciu poza okienko
-      window.onclick = (event) => {
-        if (event.target === modal) modal.style.display = "none";
-      };
+  // Obsługa kliknięcia przycisku — logujemy klik i otwieramy modal
+  btn.addEventListener("click", function (e) {
+    // nie blokujemy interakcji — logujemy asynchronicznie
+    const params = "action=click&label=" + encodeURIComponent("joinBtn") + "&page=" + encodeURIComponent(location.pathname || "index");
+    postToSheets(params);
 
-      // Formularz wysyłający email do Google Sheets
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const email = form.email.value;
+    // otwórz modal
+    modal.style.display = "block";
+  });
 
-        fetch(
-          "https://script.google.com/macros/s/AKfycbz8PEjFIdkOtNoYqGQ3REZhCCfovIYqvaf5-sLozcIRLLm5KrjzCOmP_rZRU_ZZcE81/exec",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: "email=" + encodeURIComponent(email),
-          }
-        )
-          .then(() => {
-            responseMsg.textContent = "✅ Thanks! Your email has been saved.";
-            form.reset();
-          })
-          .catch((err) => {
-            responseMsg.textContent = "❌ Error: " + err;
-          });
+  // Zamknięcie po kliknięciu w X
+  span.addEventListener("click", function () {
+    modal.style.display = "none";
+  });
+
+  // Zamknięcie po kliknięciu poza modal
+  window.addEventListener("click", function (event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+
+  // Obsługa formularza email (jak wcześniej)
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const email = form.email.value.trim();
+    if (!email) return;
+
+    const params = "email=" + encodeURIComponent(email);
+    fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params
+    })
+      .then(res => res.text())
+      .then(text => {
+        if (text && text.indexOf("SUCCESS") !== -1) {
+          responseMsg.textContent = "✅ Thanks! Your email has been saved.";
+          form.reset();
+        } else {
+          responseMsg.textContent = "⚠️ Something went wrong: " + text;
+        }
+      })
+      .catch((err) => {
+        responseMsg.textContent = "❌ Error: " + err;
       });
-    </script>
+  });
+
+});
+</script>
+
   </body>
 </html>
+
 
 
