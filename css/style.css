@@ -130,7 +130,8 @@ header {
 }
 
 header .logo {
-  width: 32px;
+  width: auto;
   height: 32px;
   margin-bottom: 6px; /* odstęp pod logo */
 }
+
