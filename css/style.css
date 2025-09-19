@@ -124,3 +124,13 @@ footer a:hover {
   border: 1px solid #ccc;
   font-size: 12px;
 }
+
+header {
+  text-align: left; /* żeby logo, h1 i tagline były wyśrodkowane */
+}
+
+header .logo {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 6px; /* odstęp pod logo */
+}
